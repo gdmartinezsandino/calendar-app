@@ -1,0 +1,22 @@
+@import "src/styles/base/variables";
+
+.p-calendar {
+  .o-forms {
+    &__field {
+      &--uploader {
+        text-align: center;
+
+        &:nth-child(2),
+        &:nth-child(3) {
+          .m-uploader__preview__image-wrapper {
+            background-color: #F1F1F1;
+          }
+        }
+
+        .default-logo-action {
+          display: block;
+        }
+      }
+    }
+  }
+}

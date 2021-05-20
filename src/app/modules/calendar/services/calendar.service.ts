@@ -1,16 +1,20 @@
 import { Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
-import { Reminder } from '../interfaces/reminder';
 
+import { environment } from '@environments/environment';
+import { Reminder } from '@interfaces/reminder';
+import * as fromServicesShared from '@shared/services';
 
-@Injectable({
-  providedIn: 'root'
-})
+@Injectable()
 export class CalendarService {
+  private _url: String;
+  public reminders: Array<Reminder> = [];
 
-  reminders: Reminder[] = [];
-
-  constructor() { }
+  constructor(
+    private _utils: fromServicesShared.UtilsService,
+  ) {
+    this._url = environment.apiWeatherUrl;
+  }
 
   create(data: Reminder): Reminder {
     return data;
