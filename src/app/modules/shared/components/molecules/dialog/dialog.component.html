@@ -1,0 +1,103 @@
+<div mat-dialog-content class="calendar-app-dialog">
+  <h1 class="calendar-app-dialog__title" mat-dialog-title>{{ data.title }}</h1>
+  
+  <div class="calendar-app-dialog__content">
+    <p *ngIf="data.message" class="t-center">{{ data.message }}</p>
+    
+    <div *ngIf="data.template" [innerHTML]="data.template"></div>
+    
+    <div *ngIf="data.form" class="o-forms">
+      <div class="o-forms__container-fields grid-top">
+        <div 
+          class="o-forms__field"
+          *ngFor="let field of data.form; let index = index"  
+          [ngClass]="{
+            'col-12': !data.addTicket, 
+            'col-6': data.addTicket,
+            'o-forms__field--uploader': field.type === 'uploader',
+            'o-forms__field--radio o-forms__field--inline': field.type === 'radio'
+          }">
+          <mat-form-field *ngIf="field.type !== 'checkbox' && field.type !== 'uploader' && field.type !== 'radio'" [color]="theme">
+            <mat-label>{{ field.label }}</mat-label>
+            <input matInput *ngIf="field.type == 'text' || field.type == 'password'" type="{{ field.type }}" [(ngModel)]="data.model[field.name]" (input)="onChange()">
+            
+            <textarea no-resize [matTextareaAutosize]="true" matInput *ngIf="field.type == 'textarea'" [(ngModel)]="data.model[field.name]" (input)="onChange()"></textarea>
+            
+            <ng-container *ngIf="field.type === 'autocomplete'">
+              <input matInput type="text" [(ngModel)]="data.model[field.name]" [matAutocomplete]="autocompleteDialogField" (input)="onChange()">
+              <mat-autocomplete autoActiveFirstOption #autocompleteDialogField="matAutocomplete" (optionSelected)="onChange()">
+                <mat-option *ngFor="let option of field.options | async" [value]="option.value">
+                  {{ option.text }}
+                </mat-option>
+              </mat-autocomplete>
+            </ng-container>
+
+            <mat-chip-list #chipList *ngIf="field.type.includes('chips')">
+              <mat-chip
+                *ngFor="let option of field.optionsSelected"
+                [selectable]="true"
+                [removable]="true"
+                (removed)="removeOption(option, field.name)">
+                {{ option }}
+                <mat-icon matChipRemove>cancel</mat-icon>
+              </mat-chip>
+              <input 
+                #inputChips
+                placeholder="{{ field.placeholder }}"
+                [(ngModel)]="data.model[field.name]"
+                (input)="onChange()"
+                [matAutocomplete]="chipsAutocompleteDialog"
+                [matChipInputFor]="chipList"
+                [matChipInputSeparatorKeyCodes]="field.type === 'chips-autocomplete' ? separatorKeysCodesOnlyDelete : separatorKeysCodes"
+                (matChipInputTokenEnd)="addOption($event, field.name)">
+              <mat-autocomplete #chipsAutocompleteDialog="matAutocomplete" (optionSelected)="selectedOption($event, field.name, inputChips)">
+                <mat-option *ngFor="let option of filteredOptions | async" [value]="option">
+                  {{ option }}
+                </mat-option>
+              </mat-autocomplete>
+            </mat-chip-list>
+
+            <mat-select *ngIf="field.type == 'select'" [(ngModel)]="data.model[field.name]" (selectionChange)="onChange()">
+              <mat-option *ngFor="let option of field.options" [value]="option.value">
+                {{ option.text }}
+              </mat-option>
+            </mat-select>
+
+            <mat-error *ngIf="field.required && data.model[field.name] === ''">
+              {{ field.errorMessage }}
+            </mat-error>
+          </mat-form-field>
+
+          <ng-container *ngIf="field.type === 'uploader'">
+            <mat-label class="o-forms__field__label">{{ field.label }}</mat-label>
+            <calendar-app-uploader [method]="field.method" (fileUploaded)="field.fileUploaded($event)"></calendar-app-uploader>
+          </ng-container>
+
+          <ng-container *ngIf="field.type === 'radio'">
+            <mat-label class="o-forms__field__label">{{ field.label }}</mat-label>
+            <mat-radio-group [(ngModel)]="data.model[field.name]" (change)="onChange()">
+              <mat-radio-button *ngFor="let option of field.options" [value]="option.value">{{ option.text }}</mat-radio-button>
+            </mat-radio-group>
+          </ng-container>
+
+          <ng-container *ngIf="field.type === 'checkbox'">
+            <mat-checkbox [(ngModel)]="data.model[field.name]" [color]="theme" (change)="onChange()">{{ field.label }}</mat-checkbox>
+          </ng-container>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="calendar-app-dialog__actions grid-middle-center mt-20" mat-dialog-actions>
+    <ng-container *ngIf="data.actions; else actionsDialog">
+      <button class="button" mat-raised-button color="accent" *ngFor="let action of data.actions" (click)="action.callback(data.model)">
+        {{ action.placeholder }}
+      </button>
+    </ng-container>
+    
+    <ng-template *actionsDialog>
+      <button *ngIf="!data.confirm " class="button" mat-raised-button (click)="onNoClick()">{{ 'dialog-acept-label'|translate }}</button>
+      <button *ngIf="data.confirm" [disabled]="data.formElement && !data.formElement.valid" class="button" mat-raised-button (click)="onConfirm()">{{ 'dialog-confirm-label'|translate }}</button>
+    </ng-template>
+  </div>
+</div>

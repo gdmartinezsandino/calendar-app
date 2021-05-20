@@ -1,0 +1,13 @@
+@import "src/styles/base/variables";
+@import "src/styles/base/typographics";
+
+.o-header {
+  &__brand {
+    text-align: center;
+
+    img {
+      width: 185px;
+      height: 34px;
+    }
+  }
+}
