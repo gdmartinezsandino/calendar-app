@@ -37,10 +37,8 @@ import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatBottomSheetModule } from '@angular/material/bottom-sheet';
 
 import * as fromPipes from './pipes';
-import * as fromDirectives from './directives';
 import * as fromServices from './services';
-import * as fromComponents from './components';
-import { MatMomentDateModule } from '@angular/material-moment-adapter';
+import * as fromComponents from './components'
 
 const ComponentsMaterial = [
   MatFormFieldModule, MatAutocompleteModule, MatCheckboxModule, MatDatepickerModule,
@@ -49,7 +47,7 @@ const ComponentsMaterial = [
   MatTabsModule, MatExpansionModule, MatButtonModule, MatChipsModule, MatIconModule,
   MatProgressSpinnerModule, MatProgressBarModule, MatDialogModule, MatTooltipModule,
   MatSnackBarModule, MatTableModule, MatSortModule, MatPaginatorModule, MatToolbarModule,
-  MatBottomSheetModule, MatButtonToggleModule, MatMomentDateModule
+  MatBottomSheetModule, MatButtonToggleModule
 ];
 
 @NgModule({
@@ -64,13 +62,11 @@ const ComponentsMaterial = [
   declarations: [
     ...fromComponents.components,
     ...fromPipes.pipes,
-    ...fromDirectives.directives,
   ],
   exports: [
     ...ComponentsMaterial,
     ...fromComponents.components,
     ...fromPipes.pipes,
-    ...fromDirectives.directives,
   ],
   providers: [
     ...fromServices.services,

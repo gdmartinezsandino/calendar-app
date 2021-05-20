@@ -1,9 +1,10 @@
+import { Reminder } from '@interfaces/reminder';
+
 export interface CalendarState {
   isLoading: boolean;
-  calendar: any;
+  reminders?: Array<Reminder>;
 }
 
 export const initialState: CalendarState = {
   isLoading: false,
-  calendar: null
 };
