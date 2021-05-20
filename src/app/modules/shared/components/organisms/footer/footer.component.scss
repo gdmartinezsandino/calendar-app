@@ -1,14 +1,11 @@
 @import "src/styles/base/variables";
 
 .o-footer {
+  padding-top: 10px;
+  padding-bottom: 10px;
   text-align: center;
 
-  @media all and (max-width: $screen-md) {
-    margin-top: 15px;
-    margin-bottom: 15px;
-  }
-  
   p {
-    color: $color-white;
+    margin-bottom: 0;
   }
 }

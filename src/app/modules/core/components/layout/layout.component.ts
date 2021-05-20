@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Title } from '@angular/platform-browser';
 import { Router, Event, NavigationEnd } from '@angular/router';
 import { filter } from 'rxjs/operators';
+import { TranslateService } from '@ngx-translate/core';
 import * as ramda from 'ramda';
 
 import * as fromServicesShared from '@shared/services';
@@ -20,7 +21,11 @@ export class LayoutComponent implements OnInit {
   constructor(
     public router: Router,
     private _title: Title,
+    public translate: TranslateService
   ) {
+    translate.addLangs(['en', 'es']);
+    translate.setDefaultLang('en');
+
     this.router.events.pipe(
       filter((e: Event): e is NavigationEnd => e instanceof NavigationEnd)
     ).subscribe((event: NavigationEnd) => {
