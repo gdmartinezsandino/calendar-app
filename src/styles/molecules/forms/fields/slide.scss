@@ -1,0 +1,7 @@
+.mat-slide-toggle {
+  $slide: &;
+
+  &-content {
+    @include paragraph-styles;
+  }
+}
