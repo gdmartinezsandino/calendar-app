@@ -1,8 +1,13 @@
 import { TranslatePipe } from './translate.pipe';
 
 describe('TranslatePipe', () => {
+  let pipe: TranslatePipe;
+
+  beforeEach(() => {
+    pipe = new TranslatePipe();
+  });
+
   it('create an instance', () => {
-    const pipe = new TranslatePipe();
     expect(pipe).toBeTruthy();
   });
 });
