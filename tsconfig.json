@@ -2,6 +2,15 @@
   "compileOnSave": false,
   "compilerOptions": {
     "baseUrl": "./",
+    "paths": {
+      "@app/*": ["src/app/*"],
+      "@environments/*": ["src/environments/*"],
+      "@interfaces/*": ["src/app/interfaces/*"],
+      "@core/*": ["src/app/modules/core/*"],
+      "@shared/*": ["src/app/modules/shared/*"],
+      "@calendar/*": ["src/app/modules/calendar/*"],
+      "@styles/*": ["src/styles/*"]
+    },
     "outDir": "./dist/out-tsc",
     "sourceMap": true,
     "declaration": false,
