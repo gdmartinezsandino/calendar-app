@@ -1,21 +1,15 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-
-import { AppRoutingModule } from './app-routing.module';
-import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
+import * as fromCore from '@core/index';
 
 @NgModule({
-  declarations: [
-    AppComponent,
-  ],
   imports: [
     BrowserModule,
-    AppRoutingModule,
     BrowserAnimationsModule,
+    fromCore.CoreModule,
   ],
-  providers: [],
-  bootstrap: [AppComponent]
+  bootstrap: [fromCore.LayoutComponent]
 })
 export class AppModule { }
