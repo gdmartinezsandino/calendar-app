@@ -9,6 +9,7 @@ import * as fromStore from '@calendar/store';
 export class CalendarService {
   public reminders$: Observable<any>;
   public reminders: Array<Reminder> = [];
+  public reminder: Reminder;
 
   constructor(
     private _store: Store<fromStore.CalendarState>,

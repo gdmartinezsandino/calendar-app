@@ -6,6 +6,7 @@ import { MomentModule } from 'ngx-moment';
 import { HttpClient } from '@angular/common/http';
 import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
+import { MccColorPickerModule} from 'material-community-components/color-picker';
 
 import { MatNativeDateModule, MAT_DATE_LOCALE } from '@angular/material/core';
 import { MatFormFieldModule, MAT_FORM_FIELD_DEFAULT_OPTIONS } from '@angular/material/form-field';
@@ -47,6 +48,7 @@ export function createTranslateLoader(http: HttpClient) {
     ReactiveFormsModule,
     RouterModule,
     MomentModule,
+    MccColorPickerModule,
     TranslateModule.forChild({
       loader: {
         provide: TranslateLoader,

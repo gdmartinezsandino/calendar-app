@@ -12,7 +12,7 @@
           class="o-forms__field"
           *ngFor="let field of data.form; let index = index"  
           [ngClass]="{
-            'o-forms__field--radio o-forms__field--inline': field.type === 'radio'
+            'o-forms__field--color': field.type === 'color'
           }">
           <mat-form-field *ngIf="field.type !== 'checkbox' && field.type !== 'radio'" color="accent">
             <mat-label>{{ field.label }}</mat-label>
@@ -26,10 +26,16 @@
                 {{ option.text }}
               </mat-option>
             </mat-select>
+
             <ng-container *ngIf="field.type === 'date'">
               <input matInput [matDatepicker]="datePickerMat" [(ngModel)]="data.model[field.name]" >
               <mat-datepicker-toggle  matSuffix [for]="datePickerMat"></mat-datepicker-toggle>
               <mat-datepicker #datePickerMat (dateChange)="onChange()"></mat-datepicker>
+            </ng-container>
+
+            <ng-container *ngIf="field.type === 'color'">
+              <mcc-color-picker matSuffix mccConnectedColorPicker [mccConnectedColorPickerOrigin]="triggerColor"></mcc-color-picker>
+              <input matInput matInput placeholder="#000000" mccColorPickerOrigin #triggerColor="mccColorPickerOrigin" [(ngModel)]="data.model[field.name]" (input)="onChange()" />
             </ng-container>
 
             <mat-error *ngIf="field.required && data.model[field.name] === ''">

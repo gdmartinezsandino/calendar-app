@@ -8,7 +8,7 @@
       <thead class="calendar__header">
         <tr>
           <th *ngFor="let day of daysOfWeek">
-            {{ 'day-' + (day|lowercase)|translate }}
+            {{ 'weekday-' + (day|lowercase)|translate }}
           </th>
         </tr>
       </thead>
@@ -16,8 +16,7 @@
         <tr *ngFor="let week of calendar">
           <td *ngFor="let day of week.days" (click)="createReminder($event, day)" [ngClass]="{ 'currentMonth': day.currentMonth, 'hasReminders': day.remindersOfThisDay.length }">
             <span>{{ day.date | date: 'dd' }}</span>
-            
-            
+
             <div class="reminder-wrapper" *ngFor="let reminder of day.remindersOfThisDay">
               <calendar-app-reminder [reminder]="reminder"></calendar-app-reminder>
             </div>

@@ -16,12 +16,12 @@
   "month-december": "Diciembre",
 
   "weekday-sunday": "Dom",
-  "weekdaymonday": "Lun",
-  "weekdaytuesday": "Mar",
-  "weekdaywednesday": "Mie",
-  "weekdaythursday": "Jue",
-  "weekdayfriday": "Vie",
-  "weekdaysaturday": "Sab",
+  "weekday-monday": "Lun",
+  "weekday-tuesday": "Mar",
+  "weekday-wednesday": "Mie",
+  "weekday-thursday": "Jue",
+  "weekday-friday": "Vie",
+  "weekday-saturday": "Sab",
 
   "reminder-modal-form-title": "Crear Recordatorio",
   "reminder-modal-form-text-label": "Texto",

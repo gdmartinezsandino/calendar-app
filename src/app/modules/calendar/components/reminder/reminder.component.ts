@@ -3,9 +3,11 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Store, select } from '@ngrx/store';
 import { Observable } from 'rxjs';
 import { TranslateService } from '@ngx-translate/core';
+import * as moment from 'moment';
 
 import { Reminder } from '@interfaces/reminder';
 import * as fromServicesShared from '@shared/services';
+import * as fromServices from '@calendar/services';
 import * as fromStore from '@calendar/store';
 
 @Component({
@@ -13,17 +15,20 @@ import * as fromStore from '@calendar/store';
   encapsulation: ViewEncapsulation.None,
   templateUrl: './reminder.component.html',
   styleUrls: ['./reminder.component.scss'],
+  providers: [fromServices.WeatherService]
 })
 export class ReminderComponent implements OnInit {
   public isLoading$: Observable<boolean>;
 
   @Input() reminder: Reminder;
+  public weatherIcon: string = '';
   public reminderEditForm: FormGroup;
 
   constructor(
     private _store: Store<fromStore.CalendarState>,
     private _formBuilder: FormBuilder,
     private _utils: fromServicesShared.UtilsService,
+    private _weather: fromServices.WeatherService,
     public translate: TranslateService
   ) {
     this.isLoading$ = this._store.pipe(select(fromStore.getLoading));
@@ -37,7 +42,18 @@ export class ReminderComponent implements OnInit {
     });
   }
 
-  ngOnInit() { }
+  ngOnInit() {
+    this._weather.getWeatherInformation(this.reminder.city)
+      .subscribe((response: any) => {
+        const list = response.list;
+        debugger
+        if (list[moment(this.reminder.dateTime).format('D')].weather[0].main.toLowerCase().indexOf('rain') > -1) {
+          this.weatherIcon = 'https://image.flaticon.com/icons/svg/12/12184.svg';
+        } else {
+          this.weatherIcon = 'https://image.flaticon.com/icons/svg/136/136723.svg';
+        }
+      })
+  }
 
   editReminder(reminder: Reminder) {
     this.reminderEditForm.patchValue({
@@ -67,7 +83,7 @@ export class ReminderComponent implements OnInit {
           {
             name: 'color',
             label: this.translate.instant('reminder-modal-form-color-label'),
-            type: 'text',
+            type: 'color',
             errorMessage: this.translate.instant('form-field-required-error'),
           },
           {

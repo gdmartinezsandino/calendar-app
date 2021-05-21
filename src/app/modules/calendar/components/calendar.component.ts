@@ -36,11 +36,11 @@ export class CalendarComponent implements OnInit {
     this.isLoading$ = this._store.pipe(select(fromStore.getLoading));
 
     this.reminderForm = this._formBuilder.group({
-      id: ['', ''],
+      id: ['', Validators.required],
       text: ['', [Validators.required, Validators.maxLength(30)]],
       dateTime: ['', Validators.required],
-      color: ['', ''],
-      city: ['', ''],
+      color: ['', Validators.required],
+      city: ['', Validators.required],
     });
 
     this.reminders$ = this._store.pipe(select(fromStore.getReminders));
@@ -59,13 +59,11 @@ export class CalendarComponent implements OnInit {
     this._store.dispatch(new fromStore.GetReminders());
   }
 
-  
-
   createCalendar(reminders: Array<Reminder>) {
     const startWeek = moment().startOf('month').week();
     const endWeek = moment().endOf('month').add('1', 'week').week();
 
-    for(let week = startWeek; week < endWeek; week++){
+    for (let week = startWeek; week < endWeek; week++) {
       this.calendar.push({
         week: week,
         days: Array(7).fill(0).map((n, i) => {
@@ -121,13 +119,15 @@ export class CalendarComponent implements OnInit {
           {
             name: 'color',
             label: this.translate.instant('reminder-modal-form-color-label'),
-            type: 'text',
+            type: 'color',
+            required: true,
             errorMessage: this.translate.instant('form-field-required-error'),
           },
           {
             name: 'city',
             label: this.translate.instant('reminder-modal-form-city-label'),
             type: 'text',
+            required: true,
             errorMessage: this.translate.instant('form-field-required-error'),
           },
         ],
