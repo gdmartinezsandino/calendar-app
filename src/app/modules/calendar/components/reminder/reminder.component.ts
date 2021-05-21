@@ -3,7 +3,6 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Store, select } from '@ngrx/store';
 import { Observable } from 'rxjs';
 import { TranslateService } from '@ngx-translate/core';
-import * as moment from 'moment';
 
 import { Reminder } from '@interfaces/reminder';
 import * as fromServicesShared from '@shared/services';
@@ -46,8 +45,7 @@ export class ReminderComponent implements OnInit {
     this._weather.getWeatherInformation(this.reminder.city)
       .subscribe((response: any) => {
         const list = response.list;
-        debugger
-        if (list[moment(this.reminder.dateTime).format('D')].weather[0].main.toLowerCase().indexOf('rain') > -1) {
+        if (list[new Date(this.reminder.dateTime).getDay()].weather[0].main.toLowerCase().indexOf('rain') > -1) {
           this.weatherIcon = 'https://image.flaticon.com/icons/svg/12/12184.svg';
         } else {
           this.weatherIcon = 'https://image.flaticon.com/icons/svg/136/136723.svg';
