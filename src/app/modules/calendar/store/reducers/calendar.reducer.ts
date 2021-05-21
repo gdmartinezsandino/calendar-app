@@ -5,33 +5,33 @@ import * as fromActions from '../actions/calendar.actions';
 
 export function CalendarReducer(state = fromStore.initialState, action: fromActions.CalendarActions): fromStore.CalendarState {
     switch (action.type) {
-      case fromActions.ActionTypes.GetCalendar: {
+      case fromActions.ActionTypes.GetReminders: {
         return { ...state, ...{
           isLoading: true,
         }};
       }
 
-      case fromActions.ActionTypes.SetCalendar: {
+      case fromActions.ActionTypes.SetReminders: {
         return { ...state, ...{
           isLoading: false,
-          calendar: action.payload
+          reminders: action.payload
         }};
       }
 
-      case fromActions.ActionTypes.UpdateCalendar: {
+      case fromActions.ActionTypes.CreateReminder: {
         return { ...state, ...{
           isLoading: true,
         }};
       }
-      case fromActions.ActionTypes.UpdateCalendarSuccess: {
+      case fromActions.ActionTypes.CreateReminderSuccess: {
         return { ...state, ...{
           isLoading: false,
-          calendar: action.payload.calendar
         }};
       }
-      case fromActions.ActionTypes.UpdateCalendarFailed: {
+
+      case fromActions.ActionTypes.CreateReminderFailed: {
         return { ...state, ...{
-          isLoading: false
+          isLoading: false,
         }};
       }
 
@@ -42,8 +42,8 @@ export function CalendarReducer(state = fromStore.initialState, action: fromActi
 }
 
 const exportLoading = (state: fromStore.CalendarState) => state.isLoading;
-const exportCalendar = (state: fromStore.CalendarState) => state.calendar;
+const exportReminders = (state: fromStore.CalendarState) => state.reminders;
 const selectCalendarState = createFeatureSelector<fromStore.CalendarState>('calendar');
 
 export const getLoading = createSelector(selectCalendarState, exportLoading);
-export const getCalendar = createSelector(selectCalendarState, exportCalendar);
+export const getReminders = createSelector(selectCalendarState, exportReminders);

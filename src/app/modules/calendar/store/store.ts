@@ -6,5 +6,5 @@ export interface CalendarState {
 }
 
 export const initialState: CalendarState = {
-  isLoading: false,
+  isLoading: false
 };

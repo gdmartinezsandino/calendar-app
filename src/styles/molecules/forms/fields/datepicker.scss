@@ -1,3 +1,15 @@
+.mat-datepicker-toggle {
+  position: absolute;
+  top: 0;
+  right: 0;
+
+  .mat-icon-button {
+    svg {
+      width: 20px;
+    }
+  }
+}
+
 .mat-calendar {
   $calendar: &;
 

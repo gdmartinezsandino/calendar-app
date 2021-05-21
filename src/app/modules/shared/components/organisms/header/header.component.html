@@ -3,5 +3,19 @@
     <figure class="o-header__brand">
       <img src="assets/images/logo.png">
     </figure>
+
+    <div class="o-header__actions">
+      <button mat-icon-button [matMenuTriggerFor]="menu">
+        <mat-icon>language</mat-icon>
+      </button>
+      <mat-menu #menu="matMenu">
+        <button mat-menu-item (click)="changeLang('en')">
+          <span>{{ 'lang-english'|translate }}</span>
+        </button>
+        <button mat-menu-item disabled>
+          <span>{{ 'lang-english'|translate }}</span>
+        </button>
+      </mat-menu>
+    </div>
   </div>
 </header>

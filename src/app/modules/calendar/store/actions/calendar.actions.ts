@@ -1,41 +1,85 @@
 import { Action } from '@ngrx/store';
 
 export enum ActionTypes {
-  GetCalendar = '[Calendar] GetCalendar',
-  SetCalendar = '[Calendar] SetCalendar',
-  UpdateCalendar = '[Calendar] UpdateCalendar',
-  UpdateCalendarSuccess = '[Calendar] UpdateCalendarSuccess',
-  UpdateCalendarFailed = '[Calendar] UpdateCalendarFailed',
+  CreateReminder = '[Calendar] CreateReminder',
+  CreateReminderSuccess = '[Calendar] CreateReminderSuccess',
+  CreateReminderFailed = '[Calendar] CreateReminderFailed',
+  EditReminder = '[Calendar] EditReminder',
+  EditReminderSuccess = '[Calendar] EditReminderSuccess',
+  EditReminderFailed = '[Calendar] EditReminderFailed',
+  DeleteReminder = '[Calendar] DeleteReminder',
+  DeleteReminderSuccess = '[Calendar] DeleteReminderSuccess',
+  DeleteReminderFailed = '[Calendar] DeleteReminderFailed',
+  GetReminders = '[Calendar] GetReminders',
+  SetReminders = '[Calendar] SetReminders',
 }
 
-export class GetCalendar implements Action {
-  readonly type = ActionTypes.GetCalendar;
+export class CreateReminder implements Action {
+  readonly type = ActionTypes.CreateReminder;
+
+  constructor(public payload: any) {}
 }
-export class SetCalendar implements Action {
-  readonly type = ActionTypes.SetCalendar;
+export class CreateReminderSuccess implements Action {
+  readonly type = ActionTypes.CreateReminderSuccess;
+
+  constructor(public payload: any) {}
+}
+export class CreateReminderFailed implements Action {
+  readonly type = ActionTypes.CreateReminderFailed;
 
   constructor(public payload: any) {}
 }
 
-export class UpdateCalendar implements Action {
-  readonly type = ActionTypes.UpdateCalendar;
+export class EditReminder implements Action {
+  readonly type = ActionTypes.EditReminder;
 
   constructor(public payload: any) {}
 }
-export class UpdateCalendarSuccess implements Action {
-  readonly type = ActionTypes.UpdateCalendarSuccess;
+export class EditReminderSuccess implements Action {
+  readonly type = ActionTypes.EditReminderSuccess;
 
   constructor(public payload: any) {}
 }
-export class UpdateCalendarFailed implements Action {
-  readonly type = ActionTypes.UpdateCalendarFailed;
+export class EditReminderFailed implements Action {
+  readonly type = ActionTypes.EditReminderFailed;
+
+  constructor(public payload: any) {}
+}
+
+export class DeleteReminder implements Action {
+  readonly type = ActionTypes.DeleteReminder;
+
+  constructor(public payload: any) {}
+}
+export class DeleteReminderSuccess implements Action {
+  readonly type = ActionTypes.DeleteReminderSuccess;
+
+  constructor(public payload: any) {}
+}
+export class DeleteReminderFailed implements Action {
+  readonly type = ActionTypes.DeleteReminderFailed;
+
+  constructor(public payload: any) {}
+}
+
+export class GetReminders implements Action {
+  readonly type = ActionTypes.GetReminders;
+}
+export class SetReminders implements Action {
+  readonly type = ActionTypes.SetReminders;
 
   constructor(public payload: any) {}
 }
 
 export type CalendarActions =
-  | GetCalendar
-  | SetCalendar
-  | UpdateCalendar
-  | UpdateCalendarSuccess
-  | UpdateCalendarFailed;
+  | CreateReminder
+  | CreateReminderSuccess
+  | CreateReminderFailed
+  | EditReminder
+  | EditReminderSuccess
+  | EditReminderFailed
+  | DeleteReminder
+  | DeleteReminderSuccess
+  | DeleteReminderFailed
+  | GetReminders
+  | SetReminders;

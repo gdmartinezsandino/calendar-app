@@ -5,9 +5,9 @@
     <p *ngIf="data.message" class="t-center">{{ data.message }}</p>
     
     <div *ngIf="data.template" [innerHTML]="data.template"></div>
-    
+
     <div *ngIf="data.form" class="o-forms">
-      <div class="o-forms__container-fields grid-top">
+      <div class="o-forms__container-fields">
         <div 
           class="o-forms__field"
           *ngFor="let field of data.form; let index = index"  
@@ -17,18 +17,27 @@
           <mat-form-field *ngIf="field.type !== 'checkbox' && field.type !== 'radio'" color="accent">
             <mat-label>{{ field.label }}</mat-label>
             
-            <input matInput *ngIf="field.type == 'text' || field.type == 'password'" type="{{ field.type }}" [(ngModel)]="data.model[field.name]" (input)="onChange()">
+            <input matInput *ngIf="field.type === 'text' || field.type === 'password'" type="{{ field.type }}" [(ngModel)]="data.model[field.name]" (input)="onChange()">
             
             <textarea no-resize [matTextareaAutosize]="true" matInput *ngIf="field.type == 'textarea'" [(ngModel)]="data.model[field.name]" (input)="onChange()"></textarea>
 
-            <mat-select *ngIf="field.type == 'select'" [(ngModel)]="data.model[field.name]" (selectionChange)="onChange()">
+            <mat-select *ngIf="field.type === 'select'" [(ngModel)]="data.model[field.name]" (selectionChange)="onChange()">
               <mat-option *ngFor="let option of field.options" [value]="option.value">
                 {{ option.text }}
               </mat-option>
             </mat-select>
+            <ng-container *ngIf="field.type === 'date'">
+              <input matInput [matDatepicker]="datePickerMat" [(ngModel)]="data.model[field.name]" >
+              <mat-datepicker-toggle  matSuffix [for]="datePickerMat"></mat-datepicker-toggle>
+              <mat-datepicker #datePickerMat (dateChange)="onChange()"></mat-datepicker>
+            </ng-container>
 
             <mat-error *ngIf="field.required && data.model[field.name] === ''">
               {{ field.errorMessage }}
+            </mat-error>
+
+            <mat-error *ngIf="data.formElement.get([field.name])?.errors?.maxlength">
+              {{ ('form-field-maxlength-error'|translate) + field.maxLength }}
             </mat-error>
           </mat-form-field>
 
@@ -47,7 +56,7 @@
     </div>
   </div>
 
-  <div class="calendar-app-dialog__actions grid-middle-center mt-20" mat-dialog-actions>
+  <div class="calendar-app-dialog__actions grid-middle-center" mat-dialog-actions>
     <ng-container *ngIf="data.actions; else actionsDialog">
       <button class="button" mat-raised-button color="accent" *ngFor="let action of data.actions" (click)="action.callback(data.model)">
         {{ action.placeholder }}
@@ -55,8 +64,11 @@
     </ng-container>
     
     <ng-template #actionsDialog>
-      <button *ngIf="!data.confirm " class="button" mat-raised-button (click)="onNoClick()">{{ 'dialog-acept-label'|translate }}</button>
-      <button *ngIf="data.confirm" [disabled]="data.formElement && !data.formElement.valid" class="button" mat-raised-button (click)="onConfirm()">{{ 'dialog-confirm-label'|translate }}</button>
+      <button *ngIf="!data.confirm" color="accent" mat-raised-button (click)="onNoClick()">{{ 'dialog-confirm-label'|translate }}</button>
+      <ng-container *ngIf="data.confirm">
+        <button color="accent" mat-raised-button (click)="onConfirm()" [disabled]="data.formElement && !data.formElement.valid">{{ 'dialog-confirm-label'|translate }}</button>
+        <button color="secondary" mat-raised-button (click)="onNoClick()">{{ 'dialog-cancel-label'|translate }}</button>
+      </ng-container>
     </ng-template>
   </div>
 </div>

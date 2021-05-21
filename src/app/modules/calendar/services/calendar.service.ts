@@ -1,36 +1,39 @@
 import { Injectable } from '@angular/core';
+import { Store, select } from '@ngrx/store';
 import { Observable, of } from 'rxjs';
 
-import { environment } from '@environments/environment';
 import { Reminder } from '@interfaces/reminder';
-import * as fromServicesShared from '@shared/services';
+import * as fromStore from '@calendar/store';
 
 @Injectable()
 export class CalendarService {
-  private _url: String;
+  public reminders$: Observable<any>;
   public reminders: Array<Reminder> = [];
 
   constructor(
-    private _utils: fromServicesShared.UtilsService,
+    private _store: Store<fromStore.CalendarState>,
   ) {
-    this._url = environment.apiWeatherUrl;
+    this.reminders$ = this._store.pipe(select(fromStore.getReminders));
+    this.reminders$.subscribe((reminders) => {
+      if (reminders) {
+        this.reminders = reminders;
+      }
+    });
   }
 
-  create(data: Reminder): Reminder {
-    return data;
+  create(data: Reminder): Observable<any> {
+    return of(data);
   }
 
-  edit(data: Reminder): Reminder {
-    return data;
+  edit(data: Reminder): Observable<any> {
+    return of(data);
   }
 
-  list(date: Date): Observable<Reminder[]> {
-    console.log(date);
+  list(): Observable<Reminder[]> {
     return of(this.reminders);
   }
 
-  delete(reminderId: string): boolean {
-    console.log(reminderId);
-    return true;
+  delete(reminderId: string): Observable<any> {
+    return of(reminderId);
   }
 }

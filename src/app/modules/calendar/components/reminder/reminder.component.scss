@@ -1,0 +1,20 @@
+@import "src/styles/base/variables";
+
+.reminder {
+  box-sizing: border-box;
+  width: 100%;
+  padding: 5px 7px;
+  border-left-style: solid;
+  border-left-width: 5px;
+  text-align: left;
+
+  &__text,
+  &__city {
+    margin-bottom: 0;
+    font-size: 0.75rem;
+  }
+
+  &__city {
+    margin-top: 5px;
+  }
+}

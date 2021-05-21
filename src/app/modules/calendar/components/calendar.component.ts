@@ -1,248 +1,149 @@
 import { Component, OnInit, ViewEncapsulation } from '@angular/core';
-import { COMMA, ENTER } from '@angular/cdk/keycodes';
-import { FormBuilder, FormGroup } from '@angular/forms';
-import { MatChipInputEvent } from '@angular/material/chips';
-import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Store, select } from '@ngrx/store';
 import { Observable } from 'rxjs';
-import { map, startWith } from 'rxjs/operators';
+import { TranslateService } from '@ngx-translate/core';
+import * as moment from 'moment';
+import { v4 as uuidv4 } from 'uuid';
 
+import { Reminder } from '@interfaces/reminder';
 import * as fromServicesShared from '@shared/services';
 import * as fromStore from '@calendar/store';
-import * as fromStoreCore from '@core/store';
 
 @Component({
-  selector: 'ag-support-calendar',
+  selector: 'calendar-app-calendar',
   encapsulation: ViewEncapsulation.None,
   templateUrl: './calendar.component.html',
   styleUrls: ['./calendar.component.scss'],
 })
 export class CalendarComponent implements OnInit {
   public isLoading$: Observable<boolean>;
-  public calendar$: Observable<any>;
-  public calendar: any;
-  public calendarForm: FormGroup;
-  
-  public separatorKeysCodes: number[] = [ENTER, COMMA];
-  public areas: Array<string> = [];
-  public filteredAreas!: Observable<string[]>;
-  public priorities: Array<string> = [];
-  public filteredPriorities!: Observable<string[]>;
-  public tags: Array<string> = [];
-  public filteredTags!: Observable<string[]>;
-  
+
+  public titleCalendar: string = '';
+  public calendar: Array<any> = [];
+  public daysOfWeek = [];
+
+  public reminders$: Observable<any>;
+  public reminders: Array<Reminder>;
+  public reminderForm: FormGroup;
+
   constructor(
     private _store: Store<fromStore.CalendarState>,
     private _formBuilder: FormBuilder,
     private _utils: fromServicesShared.UtilsService,
+    public translate: TranslateService
   ) {
     this.isLoading$ = this._store.pipe(select(fromStore.getLoading));
-    
-    this.calendarForm = this._formBuilder.group({
-      logo: ['', ''],
-      logotype_accent_bg: ['', ''],
-      logo_accent_bg: ['', ''],
-      primary_color: ['', ''],
-      accent_color: ['', ''],
-      areas: ['', ''],
-      priorities: ['', ''],
-      tags: ['', ''],
+
+    this.reminderForm = this._formBuilder.group({
+      id: ['', ''],
+      text: ['', [Validators.required, Validators.maxLength(30)]],
+      dateTime: ['', Validators.required],
+      color: ['', ''],
+      city: ['', ''],
     });
 
-    this.calendar$ = this._store.pipe(select(fromStore.getCalendar));
-    this.calendar$.subscribe((calendar) => {
-      if (calendar) {
-        this.calendar = calendar;
-        this.areas = this.calendar.areas;
-        this.priorities = this.calendar.priorities;
-        this.tags = this.calendar.tags;
-
-        this.calendarForm.patchValue({
-          ...this.calendar
-        });
-
-        this.filteredAreas = this.calendarForm.get('areas')!.valueChanges.pipe(
-          startWith(null),
-          map((value: string | null) => value ? this._filterOptions(value, 'areas') : this.areas.slice())
-        );
-    
-        this.filteredPriorities = this.calendarForm.get('priorities')!.valueChanges.pipe(
-          startWith(null),
-          map((value: string | null) => value ? this._filterOptions(value, 'priorities') : this.priorities.slice())
-        );
-
-        this.filteredTags = this.calendarForm.get('tags')!.valueChanges.pipe(
-          startWith(null),
-          map((value: string | null) => value ? this._filterOptions(value, 'tags') : this.tags.slice())
-        );
+    this.reminders$ = this._store.pipe(select(fromStore.getReminders));
+    this.reminders$.subscribe((reminders) => {
+      if (reminders) {
+        this.reminders = reminders;
+        this.calendar = [];
+        this.createCalendar(this.reminders);
       }
     });
   }
 
-  ngOnInit() { }
-
-  goTo(path: string) {
-    this._store.dispatch(new fromStoreCore.Go({
-      path: [path]
-    }));
+  ngOnInit() {
+    this.titleCalendar = moment().format('MMMM');
+    this.daysOfWeek = moment.weekdays();
+    this._store.dispatch(new fromStore.GetReminders());
   }
 
-  renderImage(path: string) {
-    return this._utils.getFileFromService('calendar', path);
-  }
-  fielUploaded(response: any, field: string) {
-    if (field === 'logo') {
-      this.calendarForm.patchValue({
-        logo: response.path
-      });
-    } else if (field === 'logotype_accent_bg') {
-      this.calendarForm.patchValue({
-        logotype_accent_bg: response.path
-      });
-    } else if (field === 'logo_accent_bg') {
-      this.calendarForm.patchValue({
-        logo_accent_bg: response.path
-      });
+  
+
+  createCalendar(reminders: Array<Reminder>) {
+    const startWeek = moment().startOf('month').week();
+    const endWeek = moment().endOf('month').add('1', 'week').week();
+
+    for(let week = startWeek; week < endWeek; week++){
+      this.calendar.push({
+        week: week,
+        days: Array(7).fill(0).map((n, i) => {
+          const date = moment().week(week).startOf('week').clone().add(n + i, 'day');
+
+          const remindersOfThisDay = [];
+          reminders.forEach((reminder: Reminder) => {
+            if (moment(reminder.dateTime).isSame(date)) {
+              remindersOfThisDay.push(reminder);
+            }
+          });
+
+          return {
+            date: date,
+            currentMonth: moment().isSame(date, 'month'),
+            remindersOfThisDay: remindersOfThisDay,
+          }
+        })
+      })
     }
-
-    this._store.dispatch(new fromStore.SetCalendar(this.calendarForm.value));
-  }
-  defaultLogo(field: string) {
-    switch(field) {
-      case 'logo':
-        this.calendarForm.patchValue({
-          logo: ''
-        });
-        break;
-
-      case 'logotype_accent_bg':
-        this.calendarForm.patchValue({
-          logotype_accent_bg: ''
-        });
-        break;
-
-      case 'logo_accent_bg':
-        this.calendarForm.patchValue({
-          logo_accent_bg: ''
-        });
-        break;
-    }
-    this._store.dispatch(new fromStore.UpdateCalendar(this.calendarForm.value));
   }
 
-  private _filterOptions(value: string, from: string): any {
-    if (typeof value !== 'string') {
+  createReminder(event: any, day: any) {
+    if (event.target.classList.value.includes('reminder')) {
       return false;
     }
-
-    const filterValue = value.toLowerCase();
-    if (from === 'areas') {
-      return this.areas.filter(area => area.toLowerCase().includes(filterValue));
-    } else if (from === 'priorities') {
-      return this.priorities.filter(priority => priority.toLowerCase().includes(filterValue));
-    } else if (from === 'tags') {
-      return this.tags.filter(tag => tag.toLowerCase().includes(filterValue));
-    } else {
-      return [];
-    }
-  }
-  
-  selectedOption(event: MatAutocompleteSelectedEvent, from: string): void {
-    if (from === 'areas') {
-      this.areas.push(event.option.viewValue);
-      this.calendarForm.patchValue({
-        areas: ''
-      });
-    } else if (from === 'priorities') {
-      this.priorities.push(event.option.viewValue);
-      this.calendarForm.patchValue({
-        priorities: ''
-      });
-    } else if (from === 'tags') {
-      this.tags.push(event.option.viewValue);
-      this.calendarForm.patchValue({
-        tags: ''
-      });
-    }
-  }
-
-  addOptionToField(event: MatChipInputEvent, from: string): void {
-    const input = event.input;
-    const value = event.value;
-
-    if ((value || '').trim()) {
-      if (from === 'areas') {
-        this.areas = this.areas.concat(value.trim());
-      } else if (from === 'priorities') {
-        this.priorities = this.priorities.concat(value.trim());
-      } else if (from === 'tags') {
-        this.tags = this.tags.concat(value.trim());
-      }
-    }
-
-    // Reset the input value
-    if (input) {
-      input.value = '';
-    }
-
-    if (from === 'areas') {
-      this.calendarForm.patchValue({
-        areas: ''
-      });
-    } else if (from === 'priorities') {
-      this.calendarForm.patchValue({
-        priorities: ''
-      });
-    } else if (from === 'tags') {
-      this.calendarForm.patchValue({
-        tags: ''
-      });
-    }
-  }
-
-  removeOptionToField(option: string, from: string): void {
-    let index = 0;
-    switch(from) {
-      case 'areas':
-        index = this.areas.indexOf(option);
-        break;
-
-      case 'priorities':
-        index = this.priorities.indexOf(option);
-        break;
-
-      case 'tags':
-        index = this.tags.indexOf(option);
-        break;
-      
-    }
-
-    if (index >= 0) {
-      if (from === 'areas') {
-        const areasClone = this.areas.slice();
-        areasClone.splice(index, 1);
-        this.areas = areasClone;
-      } else if (from === 'priorities') {
-        const prioritiesClone = this.priorities.slice();
-        prioritiesClone.splice(index, 1);
-        this.priorities = prioritiesClone;
-      } else if (from === 'tags') {
-        const tagsClone = this.tags.slice();
-        tagsClone.splice(index, 1);
-        this.tags = tagsClone;
-      }
-    }
-  }
-
-  onUpdate() {
-    this.calendarForm.patchValue({
-      areas: this.areas,
-      priorities: this.priorities,
-      tags: this.tags
+    this.reminderForm.patchValue({
+      id: uuidv4(),
+      dateTime: new Date(moment(day.date).format('MM/DD/YYYY'))
     });
 
-    if (this.calendarForm.dirty && this.calendarForm.valid) {
-      this._store.dispatch(new fromStore.UpdateCalendar(this.calendarForm.value));
+    const content: any = {
+      width: '550px',
+      data: {  
+        title: this.translate.instant('reminder-modal-form-title'),
+        confirm: true,
+        form: [
+          {
+            name: 'text',
+            label: this.translate.instant('reminder-modal-form-text-label'),
+            type: 'text',
+            required: true,
+            maxLength: 30,
+            errorMessage: this.translate.instant('form-field-required-error'),
+          },
+          {
+            name: 'dateTime',
+            label: this.translate.instant('reminder-modal-form-date-label'),
+            type: 'date',
+            required: true,
+            errorMessage: this.translate.instant('form-field-required-error'),
+          },
+          {
+            name: 'color',
+            label: this.translate.instant('reminder-modal-form-color-label'),
+            type: 'text',
+            errorMessage: this.translate.instant('form-field-required-error'),
+          },
+          {
+            name: 'city',
+            label: this.translate.instant('reminder-modal-form-city-label'),
+            type: 'text',
+            errorMessage: this.translate.instant('form-field-required-error'),
+          },
+        ],
+        model: this.reminderForm.value,
+        formElement: this.reminderForm,
+        onChange: (model: any) => {
+          this.reminderForm.patchValue(model);
+        },
+      },
+      onClose: (result: any) => {
+        if (result.action) {
+          this._store.dispatch(new fromStore.CreateReminder(this.reminderForm.value));
+        }
+        this.reminderForm.reset();
+      },
     }
+    this._utils.showDialog(content);
   }
 }

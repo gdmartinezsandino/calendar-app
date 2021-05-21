@@ -118,3 +118,20 @@ span {
 strong {
   @include font-bold;
 }
+
+table {
+  thead {
+    th {
+      @include font-bold;
+      font-size: $font-title-size;
+      line-height: 1.2;
+    }
+  }
+
+  tbody {
+    td {
+      @include font-regular;
+      font-size: $font-paragraph-size;
+    }
+  }
+}

@@ -18,15 +18,18 @@ export class DialogComponent implements OnInit {
     this.dialogRef.close(this.data.model);
     this.onClose();
   }
+
   onConfirm(): void {
     this.dialogRef.close({ action: true, data: this.data.model });
     this.onClose();
   }
+
   onChange() {
     if (typeof this.data.onChange !== 'undefined') {
       this.data.onChange(this.data.model);
     }
   }
+
   onClose() {
     if (typeof this.data.onClose !== 'undefined') {
       this.data.onClose();

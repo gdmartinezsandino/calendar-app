@@ -12,10 +12,6 @@ import * as fromComponents from './components';
 import * as fromServices from './services';
 import * as fromStore from './store';
 
-// export function setupTranslateFactory(
-//   service: TranslationsService): Function {
-//   return () => service.use('es');
-// }
 export function HttpLoaderFactory(httpClient: HttpClient) {
   return new TranslateHttpLoader(httpClient);
 }
