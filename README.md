@@ -1,12 +1,4 @@
-<div align="center">
-    <img src="https://storage.googleapis.com/public-jobsity-bucket/jobsity_logo_small.png"/>
-</div>
-
-# Angular Challenge
-
-## Description
-
-This project is designed to test your knowledge of front-end web technologies and assess your ability to create front-​end UI products with attention to details, cross-browser compatibility, standards, and  reusability.
+# Calendar App - Angular Challenge
 
 ## Assignment
 
@@ -17,21 +9,19 @@ You should start by rendering a single month view of a calendar for the current 
     <img src="https://raw.githubusercontent.com/Jobsity/ReactChallenge/main/src/assets/CalendarSample.png"/>
 </div>
 
-## Mandatory features
- - Ability to add "*reminders*" (max. 30 characters) for a day and time specified by the user. Also, include a city.
- - Ability to edit reminders - including changing text, city, day and time.
- - Add a weather service call from [OpenWeather](https://openweathermap.org/forecast16) and get the weather forecast (e.g. Rain) for the date of the calendar reminder based on the city.
+## Mandotory Features
+ - Ability to add "*reminders*" (max. 30 characters) for a day and time specified by the user. Also, include a city. :heavy_check_mark:
+ - Ability to edit reminders - including changing text, city, day, and time. :heavy_check_mark:
+ - Ability to know the weather of the city in each reminder via a weather service call from [OpenWeather](https://openweathermap.org/forecast16) to get the weather forecast (e.g. Rain). :heavy_check_mark:
 
 ## Bonus (Optional)
 
-- Expand the calendar to support more than the current month or year.
-- Properly handle overflow when multiple reminders appear on the same date.
-- Unit test the functionality: *Ability to add "*reminders*" (max. 30 characters) for a day and time specified by the user. Also, include a city.*
+- Expand the calendar to support more than the current month or year. :x:
+- Properly handle overflow when multiple reminders appear on the same date. :heavy_check_mark:
+- Unit test the functionality: *Ability to add "*reminders*" (max. 30 characters) for a day and time specified by the user. Also, include a city.* :x:
 
 ## Considerations
 
- - The project is completely focused on Front-end. Ignore the Back-end.
- - Create your Calendar using the route `/calendar`
  - Feel free to use small helper libraries for:
  -- UI Elements.
  -- Date/Time handling.
