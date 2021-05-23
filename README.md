@@ -55,21 +55,21 @@ To get more help on the Angular CLI use `ng help` or go check out the [Angular C
 ## Screenshots
 
 <div align="center">
-    <img src="https://raw.githubusercontent.com/gdmartinezsandino/calendar-app/tree/main/screenshots/view-full.png"/>
+    <img src="https://raw.githubusercontent.com/gdmartinezsandino/calendar-app/main/screenshots/view-full.png"/>
 </div>
 
 <div align="center">
-    <img src="https://raw.githubusercontent.com/gdmartinezsandino/calendar-app/tree/main/screenshots/create-reminder.png"/>
+    <img src="https://raw.githubusercontent.com/gdmartinezsandino/calendar-app/main/screenshots/create-reminder.png"/>
 </div>
 
 <div align="center">
-    <img src="https://raw.githubusercontent.com/gdmartinezsandino/calendar-app/tree/main/screenshots/edit-reminder.png"/>
+    <img src="https://raw.githubusercontent.com/gdmartinezsandino/calendar-app/main/screenshots/edit-reminder.png"/>
 </div>
 
 <div align="center">
-    <img src="https://raw.githubusercontent.com/gdmartinezsandino/calendar-app/tree/main/screenshots/delete-reminder.png"/>
+    <img src="https://raw.githubusercontent.com/gdmartinezsandino/calendar-app/main/screenshots/delete-reminder.png"/>
 </div>
 
 <div align="center">
-    <img src="https://raw.githubusercontent.com/gdmartinezsandino/calendar-app/tree/main/screenshots/language-change.png"/>
+    <img src="https://raw.githubusercontent.com/gdmartinezsandino/calendar-app/main/screenshots/language-change.png"/>
 </div>
