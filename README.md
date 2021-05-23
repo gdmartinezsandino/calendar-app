@@ -5,11 +5,13 @@
 The goal of this exercise is to create a demo calendar application using Angular.
 
 You should start by rendering a single month view of a calendar for the current month, along the lines of the illustration below:
+
 <div align="center">
     <img src="https://raw.githubusercontent.com/Jobsity/ReactChallenge/main/src/assets/CalendarSample.png"/>
 </div>
 
 ## Mandotory Features
+
  - Ability to add "*reminders*" (max. 30 characters) for a day and time specified by the user. Also, include a city. :heavy_check_mark:
  - Ability to edit reminders - including changing text, city, day, and time. :heavy_check_mark:
  - Ability to know the weather of the city in each reminder via a weather service call from [OpenWeather](https://openweathermap.org/forecast16) to get the weather forecast (e.g. Rain). :heavy_check_mark:
@@ -49,3 +51,25 @@ Run `ng e2e` to execute the end-to-end tests via [Protractor](http://www.protrac
 ## Further help
 
 To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI README](https://github.com/angular/angular-cli/blob/master/README.md).
+
+## Screenshots
+
+<div align="center">
+    <img src="https://raw.githubusercontent.com/gdmartinezsandino/calendar-app/tree/main/screenshots/view-full.png"/>
+</div>
+
+<div align="center">
+    <img src="https://raw.githubusercontent.com/gdmartinezsandino/calendar-app/tree/main/screenshots/create-reminder.png"/>
+</div>
+
+<div align="center">
+    <img src="https://raw.githubusercontent.com/gdmartinezsandino/calendar-app/tree/main/screenshots/edit-reminder.png"/>
+</div>
+
+<div align="center">
+    <img src="https://raw.githubusercontent.com/gdmartinezsandino/calendar-app/tree/main/screenshots/delete-reminder.png"/>
+</div>
+
+<div align="center">
+    <img src="https://raw.githubusercontent.com/gdmartinezsandino/calendar-app/tree/main/screenshots/language-change.png"/>
+</div>
